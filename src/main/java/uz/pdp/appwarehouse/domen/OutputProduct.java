@@ -6,33 +6,35 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "attachment")
-public class Attachment {
+@Table(name = "output_product")
+public class OutputProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "original_name")
-    private String  originalName;
 
-    @Column(name = "size")
-    private Long  size;
+    @Column(name = "amount")
+    private Double amount;
 
-    @Column(name = "name")
-    private String  name;
-
-    @Column(name = "content_type")
-    private String  contentType;
+    @Column(name = "price")
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "output_id")
+    private Output output;
+
+
 
 }

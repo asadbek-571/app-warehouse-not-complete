@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -12,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(name = "client")
 public class Client {
 
     @Id
@@ -21,7 +21,7 @@ public class Client {
     @Column(name = "name")
     private String  name;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number",unique = true)
     private String  phoneNumber;
 
 }

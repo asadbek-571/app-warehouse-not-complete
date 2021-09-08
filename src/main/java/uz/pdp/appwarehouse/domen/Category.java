@@ -9,6 +9,7 @@ import uz.pdp.appwarehouse.domen.abs.AbsEntity;
 import javax.persistence.Access;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 @Getter
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "category")
 public class Category extends AbsEntity {
     @ManyToOne
     private Category parentCategory;

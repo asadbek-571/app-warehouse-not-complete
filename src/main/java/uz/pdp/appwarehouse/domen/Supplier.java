@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uz.pdp.appwarehouse.domen.abs.AbsEntity;
 
 import javax.persistence.*;
 
@@ -12,19 +13,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Supplier {
+@Table(name = "supplier")
+public class Supplier extends AbsEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "name")
-    private String  name;
-
-    @Column(name = "active")
-    private boolean  active;
-
-    @Column(name = "phone_number")
+    @Column(name = "phone_number",unique = true)
     private String  phoneNumber;
 
 }
