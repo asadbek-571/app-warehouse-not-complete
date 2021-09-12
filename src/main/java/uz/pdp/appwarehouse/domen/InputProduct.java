@@ -36,7 +36,7 @@ public class InputProduct {
     @JoinColumn(name = "input_id")
     private Input input;
 
-    @Column(name = "expireDate")
+    @Column(name = "expire_date")
     private Date expireDate;
 
 

@@ -23,9 +23,15 @@ public class UserServiceImpl implements UserService {
     private final WarehouseRepo warehouseRepo;
     private final MapstructMapper mapstructMapper;
 
+
+    /**
+     * Saves the User
+     *
+     * @return UserDto
+     */
     @Override
     public ResponseEntity<ApiResponse<UserDto>> save(UserDto dto) {
-        Optional<Set<Warehouse>> warehouseList = warehouseRepo.findAllByActiveTrueAndIdIn(dto.getWarehousesId());
+        Optional<Set<Warehouse>> warehouseList = warehouseRepo.findAllByActiveTrueAndIdIn(dto.getWarehouseId());
         if (!warehouseList.isPresent())
             return new ResponseEntity<>(new ApiResponse<>("Warehouse not found"), HttpStatus.NOT_FOUND);
 
@@ -41,12 +47,18 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * Updates User
+     *
+     * @param id
+     * @return UserDto
+     */
     @Override
     public ResponseEntity<ApiResponse<UserDto>> update(Long id, UserDto dto) {
         Optional<Users> optionalUsers = userRepo.findById(id);
         if (!optionalUsers.isPresent())
             return new ResponseEntity<>(new ApiResponse<>("User not found"), HttpStatus.NOT_FOUND);
-        Optional<Set<Warehouse>> warehouseList = warehouseRepo.findAllByActiveTrueAndIdIn(dto.getWarehousesId());
+        Optional<Set<Warehouse>> warehouseList = warehouseRepo.findAllByActiveTrueAndIdIn(dto.getWarehouseId());
         if (!warehouseList.isPresent())
             return new ResponseEntity<>(new ApiResponse<>("Warehouse not found"), HttpStatus.NOT_FOUND);
 
@@ -73,18 +85,37 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    /**
+     * Get a single list of the user
+     *
+     * @param id
+     * @return User
+     */
     @Override
     public ResponseEntity<ApiResponse<Users>> getUser(Long id) {
         Optional<Users> optionalUsers = userRepo.findById(id);
         return optionalUsers.map(users -> new ResponseEntity<>(new ApiResponse<>(users), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(new ApiResponse<>("User not found"), HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * Get a user list
+     *
+     * @param page
+     * @param size
+     * @return User
+     */
     @Override
     public ResponseEntity<ApiResponse<List<Users>>> getUsersList(int size, int page) {
         Optional<List<Users>> optionalUsers = userRepo.findAllByActiveTrue(size, size * page);
         return optionalUsers.map(users -> new ResponseEntity<>(new ApiResponse<>(users), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(new ApiResponse<>("Users not found"), HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * Delete a single user list
+     *
+     * @param id
+     * @return UserDto
+     */
     @Override
     public ResponseEntity<ApiResponse<UserDto>> delete(Long id) {
         Optional<Users> optionalUsers = userRepo.findById(id);
@@ -93,8 +124,24 @@ public class UserServiceImpl implements UserService {
         Users users = optionalUsers.get();
         users.setActive(false);
         userRepo.save(users);
-        UserDto userDto = mapstructMapper.toUserDto(users);
+        UserDto userDto =new UserDto();
+        userDto.setActive(users.isActive());
+        userDto.setPassword(userDto.getPassword());
+        userDto.setFirstName(users.getFirstName());
+        userDto.setLastName(users.getLastName());
+        Set<Long> longs=new HashSet<>();
+        for (Warehouse warehouse : users.getWarehouses()) {
+            longs.add(warehouse.getId());
+        }
+        userDto.setWarehouseId(longs);
         return new ResponseEntity<>(new ApiResponse<>(userDto), HttpStatus.OK);
     }
 
+    public Set<Long> getId() {
+        Set<Long> longSet = new HashSet<>();
+        for (Warehouse warehouse : warehouseRepo.findAll()) {
+            longSet.add(warehouse.getId());
+        }
+        return longSet;
+    }
 }

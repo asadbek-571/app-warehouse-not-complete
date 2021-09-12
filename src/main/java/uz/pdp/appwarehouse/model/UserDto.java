@@ -23,5 +23,5 @@ public class UserDto {
 
     private boolean  active;
 
-    private Set<Long> warehousesId;
+    private Set<Long> warehouseId;
 }

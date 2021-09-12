@@ -20,4 +20,6 @@ public interface WarehouseRepo extends JpaRepository<Warehouse,Long> {
 
     Optional<Set<Warehouse>> findAllByActiveTrueAndIdIn(Set<Long> id);
 
+    Warehouse findByActiveTrueAndId(Long id);
+
 }

@@ -17,4 +17,8 @@ public interface UserRepo extends JpaRepository<Users,Long> {
             " WHERE t.active=true LIMIT :size offset :page",nativeQuery = true)
     Optional<List<Users>> findAllByActiveTrue(Integer size, Integer page);
 
+    Optional<List<Users>> findAllByActiveTrue();
+
+    Optional<Users> findByActiveTrueAndId(Long id);
+
 }

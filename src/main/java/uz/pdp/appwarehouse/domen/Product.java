@@ -21,7 +21,7 @@ public class Product extends AbsEntity {
     private Category category;
 
     @Column(name = "code")
-    private Integer code;
+    private Long code;
 
     @ManyToOne
     @JoinColumn(name = "measurement_id")
